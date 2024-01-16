@@ -19,7 +19,6 @@ class _ImageInputState extends State<ImageInput> {
     if (pickedImage == null) {
       return;
     }
-
     setState(() {
       _selectedImage = File(pickedImage.path);
     });
@@ -34,25 +33,27 @@ class _ImageInputState extends State<ImageInput> {
       label: const Text('Take picture'),
     );
     if (_selectedImage != null) {
-      content = GestureDetector(
-        onTap: takePicture,
-        child: Image.file(
-          _selectedImage!,
-          fit: BoxFit.cover,
-          width: double.infinity,
-        ),
+      content = Image.file(
+        _selectedImage!,
+        fit: BoxFit.cover,
+        width: double.infinity,
       );
     }
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 1,
-          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color:
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+            ),
+          ),
+          height: 250,
+          width: double.infinity,
+          child: content,
         ),
-      ),
-      height: 250,
-      width: double.infinity,
-      child: content,
+      ],
     );
   }
 }

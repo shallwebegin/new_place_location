@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:chat_app/models/place.dart';
-import 'package:chat_app/provider/user_provider.dart';
-import 'package:chat_app/widgets/image_input.dart';
-import 'package:chat_app/widgets/location_input.dart';
+import 'package:chat_app/providers/user_provider.dart';
+import 'package:chat_app/screens/image_input.dart';
+import 'package:chat_app/screens/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,18 +17,17 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File? _selectedImage;
-  PlaceLocation? _selectedLocation;
-
+  PlaceLocation? _placeLocation;
   void addPlace() {
     final enteredTitle = _titleController.text;
     if (enteredTitle.isEmpty ||
         _selectedImage == null ||
-        _selectedLocation == null) {
+        _placeLocation == null) {
       return;
     }
     ref
         .read(userPlaceProvider.notifier)
-        .addPlace(enteredTitle, _selectedImage!, _selectedLocation!);
+        .addPlace(enteredTitle, _selectedImage!, _placeLocation!);
     Navigator.of(context).pop();
   }
 
@@ -36,16 +35,16 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Place'),
+        title: const Text('Add new places'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             TextField(
-              controller: _titleController,
               style:
                   TextStyle(color: Theme.of(context).colorScheme.onBackground),
+              controller: _titleController,
               decoration: const InputDecoration(labelText: 'Title'),
             ),
             const SizedBox(
@@ -61,7 +60,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
             ),
             LocationInput(
               onPickLocation: (location) {
-                _selectedLocation = location;
+                _placeLocation = location;
               },
             ),
             const SizedBox(
